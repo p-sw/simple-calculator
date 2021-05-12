@@ -1,12 +1,14 @@
 import pygame
 import functions as defs
 
-window_width, window_height = (500, 600)
+window_width, window_height = (340, 515)
 pygame.init()
 screen = pygame.display.set_mode([window_width, window_height])
+pygame.display.set_caption('Calculator')
 
 stopped = False
 button_group = pygame.sprite.Group()
+boot_group = pygame.sprite.Group()
 button_colors = {"default": (150, 150, 150),
                  "highlighted": (230, 230, 230),
                  "pressed": (80, 80, 80)}
@@ -60,6 +62,8 @@ class Button(pygame.sprite.Sprite):
         self.label = Label(str(self.text), 20, self.rect.width / 2, self.rect.height / 2)
         self.keys = keys
         self.filled_color = list(button_colors['default'])
+        self.length = 15
+        self.alpha_step = int(255/self.length)
 
     def update_check(self, vnt):
         mouse_pos = pygame.mouse.get_pos()
@@ -172,6 +176,7 @@ button_group.add(CallBackButton(87, 430, int(numpad_size), int(numpad_size), 'C'
 button_group.add(CallBackButton(174, 430, int(numpad_size), int(numpad_size), 'CE', defs.clear_all,
                                 [global_list, global_list_str], pygame.K_ESCAPE))
 
+
 while not stopped:
     vnt = pygame.event.get()
     button_group.update()
@@ -187,4 +192,5 @@ while not stopped:
     global_label.text_change(' '.join(global_list_str))
     global_label.render(screen)
     button_group.draw(screen)
+    boot_group.draw(screen)
     pygame.display.flip()
